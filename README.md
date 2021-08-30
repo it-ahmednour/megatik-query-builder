@@ -25,6 +25,12 @@
 
 ## Methods
 
+### table
+```php
+DB::table('users');
+# Set Table && Get Instance Of DBConnection;
+```
+
 ### select
 ```php
 DB::table('users')->select();
@@ -39,30 +45,20 @@ DB::table('users')->select(['name', 'email']);
 
 ### select functions (min, max, count, avg, sum)
 ```php
+DB::table('users')->min('follows');
+# sql: "SELECT min(follows) FROM users"
+
 DB::table('users')->max('follows');
 # sql: "SELECT max(follows) FROM users"
 
+DB::table('users')->count('follows');
+# sql: "SELECT count(follows) FROM users"
+
+DB::table('users')->avg('star');
+# sql: "SELECT avg(star) FROM users"
+
 DB::table('users')->sum('star');
 # sql: "SELECT sum(star) FROM users"
-```
-
-### table
-```php
-DB::table('users');
-# sql: "SELECT * FROM users"
-
-DB::table('users, roles');
-# sql: "SELECT * FROM users, roles"
-
-DB::table(['users', 'roles']);
-# sql: "SELECT * FROM users, roles"
-
-DB::table('users AS user');
-# sql: "SELECT * FROM users AS user"
-
-# paremeter 2 hanya bisa digunakan jika kedua perameter string
-DB::table('users', 'user');
-# sql: "SELECT * FROM users AS user"
 ```
 
 ### get and first
@@ -78,7 +74,6 @@ DB::table('users')->first();
 ```
 
 ### join
-Peringatan!: Mohon perhatikan jika menggunakan prefix apabila table menggunkan AS (alias) maka contohnya ht_users AS u dan ht_posts AS p. Kami berharap ini dapat membantu jika ada kendala saat menggunakan prefix dan join.
 
 ```php
 # Jika menggunakan prefix
@@ -219,23 +214,23 @@ DB::table('test')->pagination(10, 2)->get();
 ### insert
 ```php
 $data = [
-    'username' => 'febrihidayan',
+    'username' => 'ahmednour',
     'status' => 1
 ];
 
 DB::table('users')->insert($data);
-# sql: "INSERT INTO users(username, status) VALUES('febrihidayan', 1)"
+# sql: "INSERT INTO users(username, status) VALUES('ahmednour', 1)"
 ```
 
 ### update
 ```php
 $data = [
-    'username' => 'febrihidayan',
+    'username' => 'ahmednour',
     'status' => 1
 ];
 
 DB::table('users')->where(1)->update($data);
-# sql: "UPDATE users SET username = 'febrihidayan', status = 1 WHERE id = 1"
+# sql: "UPDATE users SET username = 'ahmednour', status = 1 WHERE id = 1"
 ```
 
 ### delete
