@@ -27,6 +27,9 @@
 
 ### select
 ```php
+$db->table('users')->select();
+# sql: "SELECT * FROM users"
+
 $db->table('users')->select('name, email');
 # sql: "SELECT name, email FROM users"
 
