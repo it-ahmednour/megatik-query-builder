@@ -6,9 +6,9 @@ echo '<pre>';
 echo '<h2>Insert Query</h2>';
 $data = array (
     "fullname" => 'أحمد نور',
-    "username" => 'Ahmed Nour',
+    "username" => 'Ahmed Nour2',
     "password" => md5('01100809215'),
-    "email" => 'it.nour@mail.com',
+    "email" => 'it2.nour@mail.com',
     "mobile" => '01148740661',
     "notes" => "<h1>My Notes ' ee</h1>",
     "active" => 1,
@@ -45,6 +45,13 @@ $select[] = DB::table('users')->select()->sql();
 $select[] = DB::table('users')->select(['id','username'])->sql();
 $select[] = DB::table('users')->select(['id','username'])->where(["id = 1","name = 'ahmed' OR name = 'dd'",],"AND")->sql();
 $select[] = DB::table('users AS u')->select()->join('posts AS p', 'u.id', 'p.uid')->sql();
+
+
+
+$select[] = DB::table('users')->select()->getall();
+$select[] = DB::table('users')->select(['id','username'])->get();
+$select[] = DB::table('users')->select(['id','username'])->where(["id = 1","name = 'ahmed' OR name = 'dd'",],"AND")->get();
+$select[] = DB::table('users AS u')->select()->join('posts AS p', 'u.id', 'p.uid')->get();
 print_r($select);
 
 

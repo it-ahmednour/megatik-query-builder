@@ -28,7 +28,7 @@ class DB{
     ## Method To Insert Data In Table
     public function insert(Array $data){
         $keys = implode(',', array_keys($data));
-        $values = implode(',', array_values( array_map( array($this, 'insurance'),$data )));
+        $values = implode(',', array_values( array_map( array($this, 'escape'),$data )));
         $this->query = sprintf("INSERT INTO %s (%s) VALUES (%s)", self::$table, $keys, $values);
         return $this;
     }
@@ -36,7 +36,7 @@ class DB{
     ## Method For Update Data
     public function update(Array $data) {
         foreach ($data as $key => $value) {
-            $columns[] = $key . " = " . $this->insurance($value);
+            $columns[] = $key . " = " . $this->escape($value);
         }
         $columns = implode(" , ", $columns);
         $this->query = sprintf("UPDATE %s SET %s", self::$table, $columns);
@@ -122,13 +122,37 @@ class DB{
         return $sql;
     }
 
-    ## Method For Run Query
+    ## Method For Run Query Insert & Update & Delete
     public function run(){
         $sql = $this->sql();
         try{
             $stmt = self::$conn->prepare($sql);
             $stmt->execute();
             return true;
+        }catch(PDOException $e){
+            self::$error = $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getall(){
+        $sql = $this->sql();
+        try{
+            $stmt = self::$conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchall(PDO::FETCH_OBJ);
+        }catch(PDOException $e){
+            self::$error = $e->getMessage();
+            return false;
+        }
+    }
+
+    public function get(){
+        $sql = $this->sql();
+        try{
+            $stmt = self::$conn->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_OBJ);
         }catch(PDOException $e){
             self::$error = $e->getMessage();
             return false;
@@ -161,17 +185,17 @@ class DB{
     }
 
     ## Secure Value For SQL Injection
-    private function insurance($value) {
-        $value = trim($value);
-        $value = stripslashes($value);
-        $value = htmlspecialchars($value);
-        $value = htmlentities($value);
-        $value = strip_tags($value);
-        $value = self::$conn->quote($value);
-        if($value === "''"){
-            $value = 'NULL';
+    private function escape($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        $data = htmlentities($data);
+        $data = strip_tags($data);
+        $data = self::$conn->quote($data);
+        if($data === "''"){
+            $data = 'NULL';
         }
-        return $value;
+        return $data;
     }
     
     ## Set Table And Check IF Exist
