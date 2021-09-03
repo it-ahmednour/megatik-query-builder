@@ -1,7 +1,31 @@
 <?php define('DIRECT', TRUE);
 require('system/autoload.php');
-echo '<pre>';
-###############################################################################
+if(Auth::check('admin')){
+?>
+    fff
+<?php
+}else{
+    header('Location:login.php');
+	exit();
+}
+?>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<?php
+
+exit;
+
 ### Insert Query ###
 echo '<h2>Insert Query</h2>';
 $data = array (
